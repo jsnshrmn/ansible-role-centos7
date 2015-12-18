@@ -61,17 +61,23 @@
     lineinfile:
       dest: /home/libacct/.ssh/known_hosts
       line: "{{ git_fingerprints.stdout }}"
+  - name: Update yum
+    yum: name=yum state=latest
   - name: Packages for yum.
     yum: name={{ item }} state=present
     with_items:
     - deltarpm
     - yum-priorities
-    ## Specifying version to avoid package conflict
-    - yum-3.4.3-125.el7.centos.noarch
+    - yum-cron
   - name: yum-cron set for security updates
     lineinfile: "dest=/etc/yum/yum-cron.conf state=present regexp='^update_cmd = default$' line='update_cmd = security'"
-  - name: yum-cron enabled
+  - name: yum-cron apply updates
     lineinfile: "dest=/etc/yum/yum-cron.conf state=present regexp='^apply_updates = no$' line='apply_updates = yes'"
+- name: Start yum-cron on boot
+  service:
+    name: yum-cron
+    state: started
+    enabled: yes
   - name: CentOS-Base has priority
     ini_file:
       dest: /etc/yum.repos.d/CentOS-Base.repo
