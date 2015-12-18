@@ -7,7 +7,7 @@
     changed_when: timezone.stdout != "{{ server_timezone }}"
     notify:
     - Set timezone
-  - include: user-config-tasks.yml
+  - include: user.yml
   - name: Give vagrant user passwordless sudo
     lineinfile: "dest=/etc/sudoers line='vagrant ALL=(ALL) NOPASSWD: ALL' validate='visudo -cf %s'"
   - name: Disable requiretty for sudo
