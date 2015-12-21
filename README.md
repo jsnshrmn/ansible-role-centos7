@@ -25,6 +25,10 @@ user_pass is set as the libacct unix user password.  It should be a crypted valu
     encrypt: "sha512_crypt"
     confirm: yes
     salt_size: 7
+  tasks:
+  - name: Set libacct password crypt as fact
+    set_fact:
+      libacct_pw_crypt: "{{ user_pass }}"
 ```
 
 Dependencies
