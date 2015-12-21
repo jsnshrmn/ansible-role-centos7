@@ -8,6 +8,8 @@
     notify:
     - Set timezone
   - include: user.yml
+  - name: Add vagrant user to wheel group
+    command: usermod -a -G wheel vagrant
   - name: Give vagrant user passwordless sudo
     lineinfile: "dest=/etc/sudoers line='vagrant ALL=(ALL) NOPASSWD: ALL' validate='visudo -cf %s'"
   - name: Disable requiretty for sudo
