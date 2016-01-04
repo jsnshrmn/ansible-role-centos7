@@ -8,6 +8,8 @@
     notify:
     - Set timezone
   - include: user.yml
+  - name: Add vagrant user
+    user: name=vagrant state=present
   - name: Add vagrant user to wheel group
     command: usermod -a -G wheel vagrant
   - name: Give vagrant user passwordless sudo
