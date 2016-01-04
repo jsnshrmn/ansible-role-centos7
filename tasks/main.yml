@@ -1,0 +1,4 @@
+---
+  - tasks:
+    include: setup.yml
+    sudo: yes
