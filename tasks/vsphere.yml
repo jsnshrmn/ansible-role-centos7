@@ -1,5 +1,4 @@
 ---
-## This should really go in a base vmware playbook
 - name: VMWware-specific packages
   yum:
     name: "{{ item }}"

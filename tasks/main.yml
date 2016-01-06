@@ -1,12 +1,11 @@
 ---
-  - tasks:
-    include: setup.yml
-    tags:
-    - aws
-    - vagrant
-    - vsphere
-    sudo: yes
-    include: vsphere.yml
-    tags:
-    - vsphere
-    sudo: yes
+- include: setup.yml
+  sudo: yes
+  tags:
+  - aws
+  - vagrant
+  - vsphere
+- include: vsphere.yml
+  sudo: yes
+  tags:
+  - vsphere
