@@ -13,7 +13,7 @@ Requires Python passlib package.
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+vpshere tagged tasks expect server_name, server_ip, and broker_ip.  servername is the value for the hostname. server_ip sets the NIC address (Gateway, Netmask, and DNS should already be configured in your base image).  We set this because we set the IP after firing up a base box on a known addres.  broker_ip is an address for an ssh broker.
 
 user_pass is set as the libacct unix user password.  It should be a crypted value.  You can use lastpass-cli or prompt.  Eg.
 

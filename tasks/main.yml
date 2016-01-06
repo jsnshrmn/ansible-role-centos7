@@ -1,4 +1,6 @@
 ---
   - tasks:
-    include: setup.yml
+    include: setup.yml tags=aws, vagrant, vsphere
+    sudo: yes
+    include: vsphere.yml tags=vsphere
     sudo: yes

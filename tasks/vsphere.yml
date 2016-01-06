@@ -1,0 +1,42 @@
+---
+## This should really go in a base vmware playbook
+- name: VMWware-specific packages
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+  - iptables-services
+  - open-vm-tools
+- name: Disable firewalld
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+- name: Start iptables on boot
+  service:
+    name: iptables
+    state: started
+    enabled: yes
+- name: Start VMWare Tools on boot
+  service:
+    name: vmtoolsd
+    state: started
+    enabled: yes
+- name: Copy sshd_config
+  copy:
+    src: sshd_config
+    dest: /etc/ssh/sshd_config
+    mode: 0600
+    owner: root
+    group: root
+- name: Apply iptables template
+  template:
+    src: iptables.j2
+    dest: /etc/sysconfig/iptables
+    mode: 0600
+    owner: root
+    group: root
+- name: Configure NIC
+  lineinfile: "dest=/etc/sysconfig/network-scripts/ifcfg-eno16780032 state=present regexp='^IPADDR=(.+)' line='IPADDR=\"{{ server_ip }}\"'"
+- name: Set hostname
+  hostname: name="{{ server_name }}"
