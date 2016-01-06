@@ -13,7 +13,7 @@ Requires Python passlib package.
 Role Variables
 --------------
 
-vpshere tagged tasks expect server_name, server_ip, and broker_ip.  servername is the value for the hostname. server_ip sets the NIC address (Gateway, Netmask, and DNS should already be configured in your base image).  We set this because we set the IP after firing up a base box on a known addres.  broker_ip is an address for an ssh broker.
+vpshere tagged tasks expect server_name, server_ip, and broker_ip.  servername is the value for the hostname. Defaults to current FQDN. server_ip sets the NIC address (Gateway, Netmask, and DNS should already be configured in your base image). Defaults to current address. We set this because we set the IP after firing up a base box on a known addres.  broker_ip is an address for an ssh broker.
 
 user_pass is set as the libacct unix user password.  It should be a crypted value.  You can use lastpass-cli or prompt.  Eg.
 
