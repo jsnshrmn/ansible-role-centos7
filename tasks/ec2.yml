@@ -4,7 +4,7 @@
 - name: Set hostname to instance name
   shell: hostnamectl set-hostname "{{ ec2_tag_Name }}"
 - name: Also set /etc/hosts for legacy
-  lineinfile: dest=/etc/hosts line="{{ ec2_private_ip }} {{ ec2_tag_Name }}"
+  lineinfile: dest=/etc/hosts line="{{ server_ip }} {{ ec2_tag_Name }}"
 - name: Verify latest aws-cli is installed
   pip: name=awscli state=latest
 - name: Ensure /opt/oulib/bin exists
