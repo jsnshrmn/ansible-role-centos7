@@ -1,0 +1,21 @@
+---
+- name: Persistent hostname allowed in cloud config file
+  lineinfile: "dest=/etc/cloud/cloud.cfg line='preserve_hostname: true'"
+- name: Set hostname to instance name
+  shell: hostnamectl set-hostname "{{ ec2_tag_Name }}"
+- name: Also set /etc/hosts for legacy
+  lineinfile: dest=/etc/hosts line="{{ ec2_private_ip }} {{ ec2_tag_Name }}"
+- name: Verify latest aws-cli is installed
+  pip: name=awscli state=latest
+- name: Ensure /opt/oulib/bin exists
+  file:
+    path: /opt/oulib/bin
+    state: directory
+    mode: 0655
+    owner: root
+    group: wheel
+    recurse: yes
+- name: Add snapshot script to /opt/oulib/bin
+  copy: src=ebs-snapshot.sh dest=/opt/oulib/bin
+- name: Link snapshot script to /etc/cron.daily
+- file: src=/opt/oulib/bin/ebs-snapshot.sh dest=/etc/cron.daily/ebs-snapshot.cron state=link 
