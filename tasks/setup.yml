@@ -7,15 +7,14 @@
   changed_when: timezone.stdout != "{{ server_timezone }}"
   notify:
   - Set timezone
-- name: Update yum
-  yum: name=yum state=latest
 - name: Packages for yum.
-  yum: name={{ item }} state=present
+  yum: name={{ item }} state=latest
   with_items:
+  - yum
+  - yum-cron
   - deltarpm
   - epel-release
   - yum-priorities
-  - yum-cron
 - name: yum-cron set for security updates
   lineinfile: "dest=/etc/yum/yum-cron.conf state=present regexp='^update_cmd = default$' line='update_cmd = security'"
 - name: yum-cron apply updates
