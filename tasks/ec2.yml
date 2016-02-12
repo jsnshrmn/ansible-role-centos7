@@ -18,4 +18,4 @@
 - name: Add snapshot script to /opt/oulib/bin
   copy: src=ebs-snapshot.sh dest=/opt/oulib/bin
 - name: Link snapshot script to /etc/cron.daily
-- file: src=/opt/oulib/bin/ebs-snapshot.sh dest=/etc/cron.daily/ebs-snapshot.cron state=link 
+  file: src=/opt/oulib/bin/ebs-snapshot.sh dest=/etc/cron.daily/ebs-snapshot.cron state=link 
