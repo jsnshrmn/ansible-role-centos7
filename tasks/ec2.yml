@@ -2,9 +2,9 @@
 - name: Persistent hostname allowed in cloud config file
   lineinfile: "dest=/etc/cloud/cloud.cfg line='preserve_hostname: true'"
 - name: Set hostname to instance name
-  shell: hostnamectl set-hostname "{{ ec2_tag_Name }}"
+  shell: hostnamectl set-hostname "{{ server_tag_name }}"
 - name: Also set /etc/hosts for legacy
-  lineinfile: dest=/etc/hosts line="{{ server_ip }} {{ ec2_tag_Name }}"
+  lineinfile: dest=/etc/hosts line="{{ server_ip }} {{ server_tag_name }}"
 - name: Verify latest aws-cli is installed
   pip: name=awscli state=latest
 - name: Ensure /opt/oulib/bin exists

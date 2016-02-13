@@ -1,4 +1,5 @@
 ---
+server_tag_name: "{{ hostvars['localhost']['server_tag_name'] }}"
 server_ip:  "{{ ansible_default_ipv4.address }}"
 server_name: "{{ ansible_fqdn }}"
 server_timezone: 'America/Chicago'
