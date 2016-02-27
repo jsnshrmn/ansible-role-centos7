@@ -15,6 +15,7 @@
   - deltarpm
   - epel-release
   - yum-priorities
+  retries: 1
 - name: yum-cron set for security updates
   lineinfile: "dest=/etc/yum/yum-cron.conf state=present regexp='^update_cmd = default$' line='update_cmd = security'"
 - name: yum-cron apply updates
