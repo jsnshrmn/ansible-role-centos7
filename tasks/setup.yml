@@ -7,6 +7,8 @@
   changed_when: timezone.stdout != "{{ server_timezone }}"
   notify:
   - Set timezone
+- name: Clean yum.
+  command: yum -y clean all
 - name: Packages for yum.
   yum: name={{ item }} state=latest update_cache=yes
   with_items:
