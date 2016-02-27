@@ -8,7 +8,7 @@
   notify:
   - Set timezone
 - name: Packages for yum.
-  yum: name={{ item }} state=latest
+  yum: name={{ item }} state=latest update_cache=yes
   with_items:
   - yum
   - yum-cron
