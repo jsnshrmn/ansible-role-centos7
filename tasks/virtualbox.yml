@@ -1,0 +1,8 @@
+- name: vagrant user exists
+  user: name=vagrant state=present
+- name: Add vagrant user to wheel group
+  command: usermod -a -G wheel vagrant
+- name: Give vagrant user passwordless sudo
+  lineinfile: "dest=/etc/sudoers line='vagrant ALL=(ALL) NOPASSWD: ALL' validate='visudo -cf %s'"
+- name: Ensure vagrant user has the /vagrant directory
+  file: path=/vagrant state=directory mode=0775 owner=vagrant group=wheel
