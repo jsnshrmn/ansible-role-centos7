@@ -11,7 +11,7 @@
   - ec2
   - virtualbox
   - vsphere
-- include: user.yml
+- include: users.yml
   sudo: yes
   tags:
   - ec2
