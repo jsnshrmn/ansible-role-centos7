@@ -1,6 +1,6 @@
 ---
 - name: user
-  user: name={{ user_name }} shell=/bin/bash password={{ user_pass }} groups={{ user_groups }} append=yes update_password=on_create
+  user: name={{ user_name }} groups={{ user_groups }} append=yes
   register: user
 - name: ssh keys
   authorized_key:
@@ -8,6 +8,3 @@
     key: "{{ user_pubkey }}"
     state: present
     exclusive: yes
-- name: Force password change on next login
-  command: chage -d 0 {{ user_name }}
-  when: (is_temp_user_pass is defined) and is_temp_user_pass and (user.changed == True)
