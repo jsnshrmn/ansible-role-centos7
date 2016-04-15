@@ -7,3 +7,13 @@
   lineinfile: "dest=/etc/sudoers line='vagrant ALL=(ALL) NOPASSWD: ALL' validate='visudo -cf %s'"
 - name: Ensure vagrant user has the /vagrant directory
   file: path=/vagrant state=directory mode=0775 owner=vagrant group=wheel
+- name: Allow vagrant user ssh access in VirtualBox
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    line: 'DenyUsers vagrant'
+    state: absent
+- name: Restart sshd
+  service:
+    name: sshd
+    state: restarted
+    enabled: yes
