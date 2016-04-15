@@ -69,14 +69,6 @@
 - name: Ensure /opt belongs to root:wheel 0775
   file: path=/opt state=directory mode=0775 owner=root group=wheel recurse=yes
 - include: user.yml
-- name: Add vagrant user
-  user: name=vagrant state=present
-- name: Add vagrant user to wheel group
-  command: usermod -a -G wheel vagrant
-- name: Give vagrant user passwordless sudo
-  lineinfile: "dest=/etc/sudoers line='vagrant ALL=(ALL) NOPASSWD: ALL' validate='visudo -cf %s'"
 - name: Disable requiretty for sudo
   lineinfile: "dest=/etc/sudoers state=present regexp='^Defaults    requiretty$' line='#Defaults    requiretty' validate='visudo -cf %s'"
-- name: Ensure vagrant user has the /vagrant directory
-  file: path=/vagrant state=directory mode=0775 owner=vagrant group=wheel
 - include: ssh.yml
