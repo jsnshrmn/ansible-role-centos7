@@ -69,6 +69,4 @@
 - name: Ensure /opt belongs to root:wheel 0775
   file: path=/opt state=directory mode=0775 owner=root group=wheel recurse=yes
 - include: user.yml
-- name: Disable requiretty for sudo
-  lineinfile: "dest=/etc/sudoers state=present regexp='^Defaults    requiretty$' line='#Defaults    requiretty' validate='visudo -cf %s'"
 - include: ssh.yml
