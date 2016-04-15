@@ -1,4 +1,4 @@
-Role Name
+OULibraries.centos7
 =========
 
 Base CentOS7 role for OULib.
