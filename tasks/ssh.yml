@@ -1,3 +1,5 @@
+- name: Disable requiretty for sudo
+  lineinfile: "dest=/etc/sudoers state=present regexp='^Defaults    requiretty$' line='#Defaults    requiretty' validate='visudo -cf %s'"
 - name: Copy sshd_config
   copy:
     src: sshd_config
