@@ -1,0 +1,58 @@
+---
+- name: Clean yum.
+  command: yum -y clean all
+- name: Packages for yum.
+  yum: name={{ item }} state=latest update_cache=yes
+  with_items:
+  - yum
+  - yum-cron
+  - deltarpm
+  - epel-release
+  - yum-priorities
+  retries: 1
+- name: yum-cron set for security updates
+  lineinfile: "dest=/etc/yum/yum-cron.conf state=present regexp='^update_cmd = default$' line='update_cmd = security'"
+- name: yum-cron apply updates
+  lineinfile: "dest=/etc/yum/yum-cron.conf state=present regexp='^apply_updates = no$' line='apply_updates = yes'"
+- name: Start yum-cron on boot
+  service:
+    name: yum-cron
+    state: started
+    enabled: yes
+- name: CentOS-Base has priority
+  ini_file:
+    dest: /etc/yum.repos.d/CentOS-Base.repo
+    section: base
+    option: priority
+    value: 1
+    backup: yes
+- name: CentOS-Updates has priority
+  ini_file:
+    dest: /etc/yum.repos.d/CentOS-Base.repo
+    section: updates
+    option: priority
+    value: 1
+    backup: yes
+- name: Utility packages.
+  yum: name={{ item }} state=present
+  with_items:
+  - python-pip
+  - nload
+  - htop
+  - sysstat
+  - psmisc
+  - iotop
+  - policycoreutils-python
+  - git
+  - wget
+  - curl
+  - tree
+  - emacs-nox
+  - vim
+  - ack
+  - tmux
+  - screen
+  - unzip
+  - shadow-utils
+- name: Security updates
+  command: yum -y update --security

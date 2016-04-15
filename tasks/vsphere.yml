@@ -21,13 +21,6 @@
     name: vmtoolsd
     state: started
     enabled: yes
-- name: Copy sshd_config
-  copy:
-    src: sshd_config
-    dest: /etc/ssh/sshd_config
-    mode: 0600
-    owner: root
-    group: root
 - name: Apply iptables template
   template:
     src: iptables.j2
