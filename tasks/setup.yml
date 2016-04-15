@@ -11,5 +11,3 @@
   file: path=/usr/local state=directory mode=0775 owner=root group=wheel recurse=yes
 - name: Ensure /opt belongs to root:wheel 0775
   file: path=/opt state=directory mode=0775 owner=root group=wheel recurse=yes
-- include: user.yml
-- include: ssh.yml
