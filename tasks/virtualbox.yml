@@ -1,3 +1,4 @@
+---
 - name: vagrant user exists
   user: name=vagrant state=present
 - name: Add vagrant user to wheel group
