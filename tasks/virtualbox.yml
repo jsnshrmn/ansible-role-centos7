@@ -8,8 +8,11 @@
 - name: Allow vagrant user ssh access in VirtualBox
   lineinfile:
     dest: /etc/ssh/sshd_config
-    line: 'DenyUsers vagrant'
+    line: "{{ item.line }}"
     state: absent
+  with_items:
+    - { line: 'DenyUsers vagrant' }
+    - { line: 'PasswordAuthentication no' }
 - name: Restart sshd
   service:
     name: sshd
