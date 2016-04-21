@@ -11,18 +11,6 @@ A target system running CentOS7x.
 Role Variables
 --------------
 
-You'll need to define one or more users in the 'users' var. eg.
-
-```
-users:
-  - name: 'centos'
-    groups: 'wheel'
-    pubkey: 'ssh-rsa somepubkey centos@example.org'
-  - name: 'centos1'
-    groups: 'wheel'
-    pubkey: 'ssh-rsa anotherpubkey centos@example.org'
-```
-
 vpshere tagged tasks expect server_name, server_ip, and broker_ip.
 * servername is the value for the hostname. Defaults to current FQDN.
 * server_ip sets the NIC address (Gateway, Netmask, and DNS should already be configured in your base image). Defaults to current address. We set this because we set the IP after firing up a base box on a known addres.
