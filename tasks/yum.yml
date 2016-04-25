@@ -1,15 +1,14 @@
 ---
-- name: Clean yum.
-  command: yum -y clean all
+- name: Yum update
+  yum: name=* state=latest update_cache=yes
 - name: Packages for yum.
-  yum: name={{ item }} state=latest update_cache=yes
+  yum: name={{ item }} state=latest
   with_items:
   - yum
   - yum-cron
   - deltarpm
   - epel-release
   - yum-priorities
-  retries: 1
 - name: yum-cron set for security updates
   lineinfile: "dest=/etc/yum/yum-cron.conf state=present regexp='^update_cmd = default$' line='update_cmd = security'"
 - name: yum-cron apply updates
