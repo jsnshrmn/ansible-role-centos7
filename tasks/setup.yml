@@ -13,6 +13,8 @@
   file: path=/opt state=directory mode=0775 owner=root group=wheel recurse=yes
 - name: Install color prompt shell profile
   copy:
-    mode: 0644
     src: colorprompt.sh
     dest: /etc/profile.d/
+    owner: root
+    group: wheel
+    mode: 0644
