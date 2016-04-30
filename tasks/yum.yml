@@ -4,10 +4,11 @@
 - name: Packages for yum.
   yum: name={{ item }} state=latest
   with_items:
-  - yum
-  - yum-cron
   - deltarpm
   - epel-release
+  - libselinux-python
+  - yum
+  - yum-cron
   - yum-priorities
 - name: yum-cron set for security updates
   lineinfile: "dest=/etc/yum/yum-cron.conf state=present regexp='^update_cmd = default$' line='update_cmd = security'"
@@ -42,7 +43,6 @@
   - psmisc
   - iotop
   - policycoreutils-python
-  - libselinux-python
   - git
   - wget
   - curl
