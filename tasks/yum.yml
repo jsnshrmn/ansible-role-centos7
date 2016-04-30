@@ -42,6 +42,7 @@
   - psmisc
   - iotop
   - policycoreutils-python
+  - libselinux-python
   - git
   - wget
   - curl
