@@ -9,7 +9,7 @@ if  [[ $HOSTNAME = *.prod.* ]]; then
 # Color test prompts yellow
 elif  [[ $HOSTNAME = *.test.* ]]; then
   export PS1='\[\e[1;33m\][\u@\h \W]\$\[\e[0m\] '
-# Color other prompts green
-else
+# Color dev prompts green
+elif  [[ $HOSTNAME = *.dev.* ]]; then
   export PS1='\[\e[1;32m\][\u@\h \W]\$\[\e[0m\] '
 fi
