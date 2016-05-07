@@ -1,16 +1,8 @@
 ---
 - include: setup.yml
   sudo: yes
-  tags:
-  - ec2
-  - virtualbox
-  - vsphere
 - include: yum.yml
   sudo: yes
-  tags:
-  - ec2
-  - virtualbox
-  - vsphere
 - include: ec2.yml
   when: ("amazon" in ansible_product_version) and (ansible_virtualization_type == "xen") and (ansible_virtualization_role == "guest")
   sudo: yes
@@ -21,8 +13,8 @@
   sudo: yes
   tags:
   - virtualbox
-- include: vsphere.yml
+- include: vmware.yml
   when: (ansible_virtualization_type == "VMware") and (ansible_virtualization_role == "guest")
   sudo: yes
   tags:
-  - vsphere
+  - vmware
