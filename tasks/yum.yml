@@ -36,23 +36,24 @@
 - name: Utility packages.
   yum: name={{ item }} state=present
   with_items:
-  - python-pip
-  - nload
-  - htop
-  - sysstat
-  - psmisc
-  - iotop
-  - policycoreutils-python
-  - git
-  - wget
-  - curl
-  - tree
-  - emacs-nox
-  - vim
   - ack
-  - tmux
+  - curl
+  - emacs-nox
+  - git
+  - htop
+  - iotop
+  - jq
+  - nload
+  - policycoreutils-python
+  - psmisc
+  - python-pip
   - screen
-  - unzip
   - shadow-utils
+  - sysstat
+  - tmux
+  - tree
+  - unzip
+  - vim
+  - wget
 - name: Security updates
   command: yum -y update --security
