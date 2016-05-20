@@ -1,20 +1,21 @@
 ---
 - include: setup.yml
+  when: (((ansible_distribution == "CentOS") or (ansible_distribution == "RedHat")) and (ansible_distribution_major_version == "7"))
   sudo: yes
 - include: yum.yml
   sudo: yes
 - include: ec2.yml
-  when: ("amazon" in ansible_product_version) and (ansible_virtualization_type == "xen") and (ansible_virtualization_role == "guest")
+  when: (((ansible_distribution == "CentOS") or (ansible_distribution == "RedHat")) and (ansible_distribution_major_version == "7") and ("amazon" in ansible_product_version) and (ansible_virtualization_type == "xen") and (ansible_virtualization_role == "guest"))
   sudo: yes
   tags:
   - ec2
 - include: virtualbox.yml
-  when: (ansible_virtualization_type == "virtualbox") and (ansible_virtualization_role == "guest")
+  when: (((ansible_distribution == "CentOS") or (ansible_distribution == "RedHat")) and (ansible_distribution_major_version == "7") and (ansible_virtualization_type == "virtualbox") and (ansible_virtualization_role == "guest"))
   sudo: yes
   tags:
   - virtualbox
 - include: vmware.yml
-  when: (ansible_virtualization_type == "VMware") and (ansible_virtualization_role == "guest")
+  when: (((ansible_distribution == "CentOS") or (ansible_distribution == "RedHat")) and (ansible_distribution_major_version == "7") and (ansible_virtualization_type == "VMware") and (ansible_virtualization_role == "guest"))
   sudo: yes
   tags:
   - vmware
