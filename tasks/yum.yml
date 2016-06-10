@@ -55,5 +55,3 @@
   - unzip
   - vim
   - wget
-- name: Security updates
-  command: yum -y update --security
