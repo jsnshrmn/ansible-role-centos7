@@ -3,11 +3,11 @@
   yum: name={{ item }} state=present
   with_items:
     - bzip2
+    - dkms
     - gcc
-    - kernel-devel
+    - "kernel-devel-{{ ansible_kernel }}"
 - name: Build VirtualBox Guest Additions
   shell: >
-    export KERN_DIR=/usr/src/kernels/`ls /usr/src/kernels | sort | tail -1` && \
     VBADD=`find /opt -maxdepth 1 -name "VBoxGuestAdditions*" -type d | sort | tail -1` && \
     VBSRC=`find ${VBADD}/src -maxdepth 1 -name "vboxguest*" -type d | sort | tail -1` && \
     cd ${VBSRC} && \
