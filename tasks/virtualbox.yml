@@ -1,17 +1,36 @@
 ---
-- name: Build chain for VirtualBox Guest Additions.
+- name: Yum packages for building dynamic kernel modules.
   yum: name={{ item }} state=present
   with_items:
     - bzip2
     - dkms
     - gcc
-    - "kernel-devel-{{ ansible_kernel }}"
-- name: Build VirtualBox Guest Additions
+    - make
+- name: Identify installed kernels
   shell: >
-    VBADD=`find /opt -maxdepth 1 -name "VBoxGuestAdditions*" -type d | sort | tail -1` && \
-    VBSRC=`find ${VBADD}/src -maxdepth 1 -name "vboxguest*" -type d | sort | tail -1` && \
-    cd ${VBSRC} && \
-    make && make install
+    rpm -qa kernel | cut -d '-' -f 2,3
+  register: get_installed_kernel_versions
+- name: Identify latest installed VirtualBox Guest Additions source
+  shell: >
+    find /usr/src -maxdepth 1 -name "vboxguest-*" -exec basename "{}" \; | sort | tail -1 | cut -d '-' -f 2
+  register: get_vboxguest_version
+- name: Yum devel package for each installed kernel
+  yum:
+    name: "kernel-devel-{{ item }}"
+    state: present
+  with_items: "{{ get_installed_kernel_versions.stdout_lines }}"
+- name: Yum headers package for each installed kernel
+  yum:
+    name: "kernel-headers-{{ item }}"
+    state: present
+  with_items: "{{ get_installed_kernel_versions.stdout_lines }}"
+- name: DKMS remove VirtualBox Guest Additions module for all kernels
+  command: dkms remove -m vboxguest -v {{ get_vboxguest_version.stdout }} --all
+- name: DKMS Add VirtualBox Guest Additions module for all kernels
+  command: dkms add -m vboxguest -v {{ get_vboxguest_version.stdout }} --all
+  ignore_errors: yes
+- name: DKMS autoinstall
+  command: dkms autoinstall
 - name: Start DKMS on boot
   service:
     name: dkms
