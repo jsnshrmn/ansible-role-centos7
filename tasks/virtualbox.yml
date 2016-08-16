@@ -26,6 +26,7 @@
   with_items: "{{ get_installed_kernel_versions.stdout_lines }}"
 - name: DKMS remove VirtualBox Guest Additions module for all kernels
   command: dkms remove -m vboxguest -v {{ get_vboxguest_version.stdout }} --all
+  ignore_errors: yes
 - name: DKMS Add VirtualBox Guest Additions module for all kernels
   command: dkms add -m vboxguest -v {{ get_vboxguest_version.stdout }} --all
   ignore_errors: yes
