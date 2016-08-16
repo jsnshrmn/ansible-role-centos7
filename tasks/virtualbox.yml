@@ -12,3 +12,8 @@
     VBSRC=`find ${VBADD}/src -maxdepth 1 -name "vboxguest*" -type d | sort | tail -1` && \
     cd ${VBSRC} && \
     make && make install
+- name: Start DKMS on boot
+  service:
+    name: dkms
+    state: started
+    enabled: yes
