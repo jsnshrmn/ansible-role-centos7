@@ -24,16 +24,34 @@
     name: "kernel-headers-{{ item }}"
     state: present
   with_items: "{{ get_installed_kernel_versions.stdout_lines }}"
-- name: DKMS remove VirtualBox Guest Additions module for all kernels
-  command: dkms remove -m vboxguest -v {{ get_vboxguest_version.stdout }} --all
-  ignore_errors: yes
-- name: DKMS Add VirtualBox Guest Additions module for all kernels
-  command: dkms add -m vboxguest -v {{ get_vboxguest_version.stdout }} --all
-  ignore_errors: yes
-- name: DKMS autoinstall
-  command: dkms autoinstall
 - name: Start DKMS on boot
   service:
     name: dkms
     state: started
     enabled: yes
+- name: Get checksum for VBoxGuestAdditions
+  uri:
+    url: "http://download.virtualbox.org/virtualbox/{{ get_vboxguest_version.stdout }}/MD5SUMS"
+    return_content: yes
+  register: vbox_md5sums
+#- name: Get VBoxGuestAdditions
+#  get_url:
+#    url: "http://download.virtualbox.org/virtualbox/{{ get_vboxguest_version.stdout }}/VBoxGuestAdditions_{{ get_vboxguest_version.stdout }}.iso"
+#    dest: "/vagrant/VBoxGuestAdditions_{{ get_vboxguest_version.stdout }}.iso"
+#    checksum: "md5:{{ vbox_md5sums.content[0:32] }}"
+- name: Mount VBoxGuestAdditions ISO
+  mount:
+    name: /media/VBoxGuestAdditions
+    src: "/vagrant/VBoxGuestAdditions_{{ get_vboxguest_version.stdout }}.iso"
+    fstype: iso9660
+    opts: loop
+    state: mounted
+- name: Install VBoxGuestAdditions with DKMS support
+  command: >
+    /media/VBoxGuestAdditions/VBoxLinuxAdditions.run
+- name: Unmount VBoxGuestAdditions ISO
+  mount:
+    name: /media/VBoxGuestAdditions
+    state: unmounted
+- name: DKMS autoinstall
+  command: dkms autoinstall
