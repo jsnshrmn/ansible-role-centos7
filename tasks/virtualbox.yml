@@ -35,5 +35,7 @@
 - name: DKMS add vboxguest
   command: >
     dkms add -m vboxguest -v {{ get_vboxguest_version.stdout }} --all
+  ignore_errors: yes
 - name: DKMS autoinstall
   command: dkms autoinstall
+  ignore_errors: yes
