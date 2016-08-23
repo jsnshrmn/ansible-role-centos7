@@ -1,11 +1,14 @@
 ---
-- name: Yum packages for building dynamic kernel modules.
+- name: Build chain for VirtualBox Guest Additions.
   yum: name={{ item }} state=present
   with_items:
     - bzip2
     - dkms
     - gcc
     - make
+    - yum-plugin-versionlock
+- name: Lock kernel version
+  command: yum versionlock kernel
 - name: Identify installed kernels
   shell: >
     rpm -qa kernel | cut -d '-' -f 2,3
@@ -29,29 +32,8 @@
     name: dkms
     state: started
     enabled: yes
-- name: Get checksum for VBoxGuestAdditions
-  uri:
-    url: "http://download.virtualbox.org/virtualbox/{{ get_vboxguest_version.stdout }}/MD5SUMS"
-    return_content: yes
-  register: vbox_md5sums
-#- name: Get VBoxGuestAdditions
-#  get_url:
-#    url: "http://download.virtualbox.org/virtualbox/{{ get_vboxguest_version.stdout }}/VBoxGuestAdditions_{{ get_vboxguest_version.stdout }}.iso"
-#    dest: "/vagrant/VBoxGuestAdditions_{{ get_vboxguest_version.stdout }}.iso"
-#    checksum: "md5:{{ vbox_md5sums.content[0:32] }}"
-- name: Mount VBoxGuestAdditions ISO
-  mount:
-    name: /media/VBoxGuestAdditions
-    src: "/vagrant/VBoxGuestAdditions_{{ get_vboxguest_version.stdout }}.iso"
-    fstype: iso9660
-    opts: loop
-    state: mounted
-- name: Install VBoxGuestAdditions with DKMS support
+- name: DKMS add vboxguest
   command: >
-    /media/VBoxGuestAdditions/VBoxLinuxAdditions.run
-- name: Unmount VBoxGuestAdditions ISO
-  mount:
-    name: /media/VBoxGuestAdditions
-    state: unmounted
+    dkms add -m vboxguest -v {{ get_vboxguest_version.stdout }} --all
 - name: DKMS autoinstall
   command: dkms autoinstall
