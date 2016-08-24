@@ -1,11 +1,14 @@
 ---
-- name: Yum packages for building dynamic kernel modules.
+- name: Build chain for VirtualBox Guest Additions.
   yum: name={{ item }} state=present
   with_items:
     - bzip2
     - dkms
     - gcc
     - make
+    - yum-plugin-versionlock
+- name: Lock kernel version
+  command: yum versionlock kernel
 - name: Identify installed kernels
   shell: >
     rpm -qa kernel | cut -d '-' -f 2,3
@@ -24,16 +27,15 @@
     name: "kernel-headers-{{ item }}"
     state: present
   with_items: "{{ get_installed_kernel_versions.stdout_lines }}"
-- name: DKMS remove VirtualBox Guest Additions module for all kernels
-  command: dkms remove -m vboxguest -v {{ get_vboxguest_version.stdout }} --all
-  ignore_errors: yes
-- name: DKMS Add VirtualBox Guest Additions module for all kernels
-  command: dkms add -m vboxguest -v {{ get_vboxguest_version.stdout }} --all
-  ignore_errors: yes
-- name: DKMS autoinstall
-  command: dkms autoinstall
 - name: Start DKMS on boot
   service:
     name: dkms
     state: started
     enabled: yes
+- name: DKMS add vboxguest
+  command: >
+    dkms add -m vboxguest -v {{ get_vboxguest_version.stdout }} --all
+  ignore_errors: yes
+- name: DKMS autoinstall
+  command: dkms autoinstall
+  ignore_errors: yes
