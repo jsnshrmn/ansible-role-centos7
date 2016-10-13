@@ -18,3 +18,14 @@
     owner: root
     group: wheel
     mode: 0644
+
+- name: Copy IPv6 sysctl Config
+  copy:
+    src: disableipv6.conf
+    dest: /etc/sysctl.d/disableipv6.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Apply sysctl
+  command: sysctl -p
