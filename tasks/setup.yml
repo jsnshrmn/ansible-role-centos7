@@ -22,7 +22,7 @@
 - name: Comment out IPv6 loopback entry in /etc/hosts.
   replace:
     dest: /etc/hosts
-    regexp: '^[^#]((::1)(.+))$'
+    regexp: '^((::1)(.+))$'
     replace: '#\1'
     backup: yes
 
