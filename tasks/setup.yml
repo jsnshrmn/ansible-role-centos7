@@ -19,6 +19,13 @@
     group: wheel
     mode: 0644
 
+- name: Comment out IPv6 loopback entry in /etc/hosts.
+  replace:
+    dest: /etc/hosts
+    regexp: '^[^#]((::1)(.+))$'
+    replace: '#\1'
+    backup: yes
+
 - name: Copy IPv6 sysctl Config
   copy:
     src: disableipv6.conf
