@@ -16,6 +16,6 @@ elif  [[ $HOSTNAME = *.test.* ]]; then
 elif  [[ $HOSTNAME = *.dev.* ]]; then
   export PS1='\[\e[1;32m\][\u@\H \W]\$\[\e[0m\] '
 # Color vagrant prompts green
-elif  [[ $HOSTNAME = *.vagrant.dev ]]; then
+elif  [[ $HOSTNAME = *.vagrant.localdomain ]]; then
   export PS1='\[\e[1;32m\][\u@\H \W]\$\[\e[0m\] '
 fi
