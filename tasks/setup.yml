@@ -1,4 +1,5 @@
 ---
+
 - name: Check Timezone
   shell: >
     timedatectl status | grep Timezone: | cut -d ':' -f 2 | cut -d '(' -f 1 | xargs
@@ -7,17 +8,35 @@
   changed_when: timezone.stdout != "{{ server_timezone }}"
   notify:
   - Set timezone
+
 - name: Ensure /usr/local belongs to root:wheel 0775
-  file: path=/usr/local state=directory mode=0775 owner=root group=wheel recurse=yes
+  file:
+    path: /usr/local
+    mode: 0775
+    owner: root
+    group: wheel
+    state: directory
+    recurse: yes
+
 - name: Ensure /opt belongs to root:wheel 0775
-  file: path=/opt state=directory mode=0775 owner=root group=wheel recurse=yes
-- name: Install color prompt shell profile
+  file:
+    path: /opt
+    state: directory
+    mode: 0775
+    owner: root
+    group: wheel
+    recurse: yes
+
+- name: Install shell profile config
   copy:
-    src: colorprompt.sh
+    src: "{{ item }}"
     dest: /etc/profile.d/
     owner: root
     group: wheel
     mode: 0644
+  with_items:
+    - colorprompt.sh
+    - editor.sh
 
 - name: Comment out IPv6 loopback entry in /etc/hosts.
   replace:
