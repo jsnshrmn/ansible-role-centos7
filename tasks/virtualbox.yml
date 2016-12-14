@@ -22,11 +22,13 @@
     name: "kernel-devel-{{ item }}"
     state: present
   with_items: "{{ get_installed_kernel_versions.stdout_lines }}"
+  ignore_errors: yes
 - name: Yum headers package for each installed kernel
   yum:
     name: "kernel-headers-{{ item }}"
     state: present
   with_items: "{{ get_installed_kernel_versions.stdout_lines }}"
+  ignore_errors: yes
 - name: Start DKMS on boot
   service:
     name: dkms
