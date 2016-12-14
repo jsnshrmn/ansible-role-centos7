@@ -11,6 +11,7 @@
     name: firewalld
     state: stopped
     enabled: no
+  ignore_errors: yes
 - name: Start iptables on boot
   service:
     name: iptables
