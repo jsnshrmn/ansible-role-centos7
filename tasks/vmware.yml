@@ -6,6 +6,10 @@
   with_items:
   - iptables-services
   - open-vm-tools
+- name: Get ifcfg path
+  shell: >
+    find /etc/sysconfig/network-scripts -type f -name "ifcfg-*" | sort | head -1
+  register: get_ifcfg_path
 - name: Disable firewalld
   service:
     name: firewalld
@@ -30,6 +34,10 @@
     owner: root
     group: root
 - name: Configure NIC
-  lineinfile: "dest=/etc/sysconfig/network-scripts/ifcfg-eno16780032 state=present regexp='^IPADDR=(.+)' line='IPADDR=\"{{ server_ip }}\"'"
+  lineinfile:
+    dest: "{{ get_ifcfg_path.stdout }}"
+    state: present
+    regexp: '^IPADDR=(.+)'
+    line: 'IPADDR=\"{{ server_ip }}\"'
 - name: Set hostname
   hostname: name="{{ server_name }}"
