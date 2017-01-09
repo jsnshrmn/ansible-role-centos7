@@ -28,3 +28,9 @@
   sudo: yes
   tags:
   - centos7_vmware
+
+- include: metal.yml
+  when: (((ansible_distribution == "CentOS") or (ansible_distribution == "RedHat")) and (ansible_distribution_major_version == "7") and (ansible_virtualization_role == "host"))
+  sudo: yes
+  tags:
+  - centos7_metal

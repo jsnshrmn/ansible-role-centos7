@@ -1,9 +1,13 @@
+# Created by OULibraries/ansible-role-centos7
 *filter
 :INPUT DROP [0:0]
 :FORWARD DROP [0:0]
 :OUTPUT ACCEPT [0:0]
 -A INPUT -m state --state ESTABLISHED -j ACCEPT
--A INPUT -s {{ broker_ip }}/32 -p tcp -m tcp --dport 22 -j ACCEPT
 -A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT
 -A INPUT -i lo -j ACCEPT
+{% for iptables in centos7_iptables %}
+# {{ iptables.rule_name }}
+-A INPUT -p tcp -m state --state NEW -s {{ iptables.source_ip }} --dport {{ iptables.tcp_port }} -j ACCEPT
+{% endfor %}
 COMMIT

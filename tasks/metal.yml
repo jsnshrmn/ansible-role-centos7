@@ -1,0 +1,25 @@
+---
+- name: Metal-specific packages
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+  - iptables-services
+- name: Disable firewalld
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+  ignore_errors: yes
+- name: Start iptables on boot
+  service:
+    name: iptables
+    state: started
+    enabled: yes
+- name: Apply iptables template
+  template:
+    src: iptables.j2
+    dest: /etc/sysconfig/iptables
+    mode: 0600
+    owner: root
+    group: root
