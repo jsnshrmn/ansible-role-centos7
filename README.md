@@ -14,7 +14,20 @@ Role Variables
 vpshere tagged tasks expect server_name, server_ip, and broker_ip.
 * servername is the value for the hostname. Defaults to current FQDN.
 * server_ip sets the NIC address (Gateway, Netmask, and DNS should already be configured in your base image). Defaults to current address. We set this because we set the IP after firing up a base box on a known addres.
-* broker_ip is an address for an ssh broker.
+* centos7_iptables contains a list of firewall exceptions for vmware and bare metal installs.  If you leave this empty, say goodby to ssh access. example below
+
+```
+centos7_iptables:
+  - rule_name: Some SSH Broker
+    source_ip: 192.168.0.2/32
+    tcp_port: 22
+  - rule_name: HTTP
+    source_ip: 0.0.0.0
+    tcp_port: 139
+  - rule_name: HTTPS
+    source_ip: 0.0.0.0
+    tcp_port: 443
+```
 
 Dependencies
 ------------
