@@ -4,40 +4,19 @@
     name: "{{ item }}"
     state: latest
   with_items:
-  - iptables-services
   - open-vm-tools
 - name: Get ifcfg path
   shell: >
     find /etc/sysconfig/network-scripts -type f -name "ifcfg-*" | sort | head -1
   register: get_ifcfg_path
-- name: Disable firewalld
-  service:
-    name: firewalld
-    state: stopped
-    enabled: no
-  ignore_errors: yes
-- name: Start iptables on boot
-  service:
-    name: iptables
-    state: started
-    enabled: yes
 - name: Start VMWare Tools on boot
   service:
     name: vmtoolsd
     state: started
     enabled: yes
-- name: Apply iptables template
-  template:
-    src: iptables.j2
-    dest: /etc/sysconfig/iptables
-    mode: 0600
-    owner: root
-    group: root
 - name: Configure NIC
   lineinfile:
     dest: "{{ get_ifcfg_path.stdout }}"
     state: present
     regexp: '^IPADDR=(.+)'
     line: 'IPADDR="{{ server_ip }}"'
-- name: Set hostname
-  hostname: name="{{ server_name }}"
