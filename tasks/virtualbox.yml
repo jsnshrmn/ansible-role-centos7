@@ -41,3 +41,10 @@
 - name: DKMS autoinstall
   command: dkms autoinstall
   ignore_errors: yes
+- name: Make sure virtualbox kernel modules load on reboot
+  copy:
+    src: virtualbox.conf
+    dest: /etc/modules-load.d/virtualbox.conf
+    owner: root
+    group: root
+    mode: 0644
