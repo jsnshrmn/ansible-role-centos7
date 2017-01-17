@@ -11,11 +11,6 @@
     state: stopped
     enabled: no
   ignore_errors: yes
-- name: Start iptables on boot
-  service:
-    name: iptables
-    state: started
-    enabled: yes
 - name: Apply iptables template
   template:
     src: iptables.j2
@@ -23,3 +18,10 @@
     mode: 0600
     owner: root
     group: root
+- name: Restart iptables, run on boot
+  service:
+    name: iptables
+    state: restarted
+    enabled: yes
+- name: Set hostname
+  hostname: name="{{ server_name }}"
