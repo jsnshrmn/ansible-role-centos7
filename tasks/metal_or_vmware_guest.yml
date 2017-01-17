@@ -1,5 +1,5 @@
 ---
-- name: Metal-specific packages
+- name: Metal- or VMWare-specific packages
   yum:
     name: "{{ item }}"
     state: latest
