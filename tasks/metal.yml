@@ -23,5 +23,24 @@
     name: iptables
     state: restarted
     enabled: yes
-- name: Set hostname
-  hostname: name="{{ server_name }}"
+- name: Remove any previous /etc/hosts entries with this name
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "{{ server_name }}"
+    state: absent
+    backup: yes
+- name: Remove any previous /etc/hosts entries with this ip
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^{{ server_ip }}"
+    state: absent
+    backup: yes
+- name: Set /etc/hosts with current name and ip
+  lineinfile:
+    dest: /etc/hosts
+    line: "{{ server_ip }} {{ server_name }}"
+- name: Set hostname using ansible module
+  hostname:
+    name: "{{ server_name }}"
+- name: Set hostname using hostnamectl
+  shell: hostnamectl set-hostname "{{ server_name }}"
