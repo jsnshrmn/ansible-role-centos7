@@ -21,8 +21,11 @@ VBOXADD=$(find /opt/ -wholename "/opt/VBoxGuestAdditions-*/init/vboxadd" | sort 
 # If /vagrant is anything other than vboxfs
 if [ "${VAGRANT_DIR_FS}" != "vboxsf" ]; then
 
-  # Run throught the Guest Additions Setup
+  # Run Guest Additions Setup
   ${VBOXADD} setup
+
+  # Start the vboxadd service
+  systemctl start vboxadd
 
   # Manually mount the filesystem
   mount -t vboxsf -o uid=1000,gid=1000 vagrant /vagrant
