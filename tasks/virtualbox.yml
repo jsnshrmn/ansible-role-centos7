@@ -17,6 +17,10 @@
   shell: >
     find /usr/src -maxdepth 1 -name "vboxguest-*" -exec basename "{}" \; | sort | tail -1 | cut -d '-' -f 2
   register: get_vboxguest_version
+- name: Identify path for latest Guest Additions Executable
+  shell: >
+    find /opt/ -wholename "/opt/VBoxGuestAdditions-*/init/vboxadd" | sort | tail -1
+  register: get_vboxadd
 - name: Yum devel package for each installed kernel
   yum:
     name: "kernel-devel-{{ item }}"
@@ -38,6 +42,13 @@
   command: >
     dkms add -m vboxguest -v {{ get_vboxguest_version.stdout }} --all
   ignore_errors: yes
-- name: DKMS autoinstall
-  command: dkms autoinstall
-  ignore_errors: yes
+- name: Install vboxadd
+  command: >
+    {{ get_vboxadd.stdout }} setup
+- name: Install rc.local script to recover from vagrant/vbox guest additions issues on boot
+  copy:
+    src: virtualbox_rc.local
+    dest: /etc/rc.d/rc.local
+    owner: root
+    group: wheel
+    mode: 0755
