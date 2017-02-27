@@ -37,6 +37,7 @@
   yum: name={{ item }} state=present
   with_items:
   - ack
+  - bind-utils
   - bash-completion
   - curl
   - emacs-nox
