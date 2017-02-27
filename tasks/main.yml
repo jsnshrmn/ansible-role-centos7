@@ -5,11 +5,11 @@
   tags:
   - centos7_yum
 
-#- include: virtualbox.yml
-#  when: (((ansible_distribution == "CentOS") or (ansible_distribution == "RedHat")) and (ansible_distribution_major_version == "7") and (ansible_virtualization_type == "virtualbox") and (ansible_virtualization_role == "guest"))
-#  sudo: yes
-#  tags:
-#  - centos7_virtualbox
+- include: virtualbox.yml
+  when: (((ansible_distribution == "CentOS") or (ansible_distribution == "RedHat")) and (ansible_distribution_major_version == "7") and (ansible_virtualization_type == "virtualbox") and (ansible_virtualization_role == "guest"))
+  sudo: yes
+  tags:
+  - centos7_virtualbox
 
 - include: setup.yml
   when: (((ansible_distribution == "CentOS") or (ansible_distribution == "RedHat")) and (ansible_distribution_major_version == "7"))
@@ -33,4 +33,5 @@
   when: (((ansible_distribution == "CentOS") or (ansible_distribution == "RedHat")) and (ansible_distribution_major_version == "7") and ((ansible_virtualization_role == "host") or ((ansible_virtualization_type == "VMware") and (ansible_virtualization_role == "guest"))))
   sudo: yes
   tags:
-  - centos7_metal_or_vmware_guest
+  - centos7_metal
+  - centos7_vmware_guest
