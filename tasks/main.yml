@@ -1,37 +1,37 @@
 ---
 - include: yum.yml
   when: (((ansible_distribution == "CentOS") or (ansible_distribution == "RedHat")) and (ansible_distribution_major_version == "7"))
-  sudo: yes
+  become: true
   tags:
   - centos7_yum
 
 - include: virtualbox.yml
   when: (((ansible_distribution == "CentOS") or (ansible_distribution == "RedHat")) and (ansible_distribution_major_version == "7") and (ansible_virtualization_type == "virtualbox") and (ansible_virtualization_role == "guest"))
-  sudo: yes
+  become: true
   tags:
   - centos7_virtualbox
 
 - include: setup.yml
   when: (((ansible_distribution == "CentOS") or (ansible_distribution == "RedHat")) and (ansible_distribution_major_version == "7"))
-  sudo: yes
+  become: true
   tags:
   - centos7_setup
 
 - include: ec2.yml
   when: (((ansible_distribution == "CentOS") or (ansible_distribution == "RedHat")) and (ansible_distribution_major_version == "7") and ("amazon" in ansible_product_version) and (ansible_virtualization_type == "xen") and (ansible_virtualization_role == "guest"))
-  sudo: yes
+  become: true
   tags:
   - centos7_ec2
 
 - include: vmware.yml
   when: (((ansible_distribution == "CentOS") or (ansible_distribution == "RedHat")) and (ansible_distribution_major_version == "7") and (ansible_virtualization_type == "VMware") and (ansible_virtualization_role == "guest"))
-  sudo: yes
+  become: true
   tags:
   - centos7_vmware_guest
 
 - include: metal_or_vmware_guest.yml
   when: (((ansible_distribution == "CentOS") or (ansible_distribution == "RedHat")) and (ansible_distribution_major_version == "7") and ((ansible_virtualization_role == "host") or ((ansible_virtualization_type == "VMware") and (ansible_virtualization_role == "guest"))))
-  sudo: yes
+  become: true
   tags:
   - centos7_metal
   - centos7_vmware_guest
