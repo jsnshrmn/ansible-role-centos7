@@ -9,6 +9,43 @@
   notify:
   - Set timezone
 
+- name: Create swap file
+  command: >
+    dd if=/dev/zero of={{ centos7_swap.file_path }} bs=1024 count={{ centos7_swap.file_size }}
+  args:
+    creates: "{{ centos7_swap.file_path }}"
+  when: ((centos7_swap is defined) and (centos7_swap is not none))
+
+- name: Change swap file permissions
+  file:
+    path: "{{ centos7_swap.file_path }}"
+    owner: root
+    group: root
+    mode: 0600
+  when: ((centos7_swap is defined) and (centos7_swap is not none))
+
+- name: Check swap file
+  command: >
+    grep '{{ centos7_swap.file_path }}' /proc/swaps
+  register: swapfile_test
+  when: ((centos7_swap is defined) and (centos7_swap is not none))
+
+- name: Make swap file
+  command: >
+    sudo mkswap {{ centos7_swap.file_path }}
+  when: ((centos7_swap is defined) and (centos7_swap is not none) and (swapfile_test.rc != 0))
+
+- name: Write swap entry in fstab
+  mount:
+    name: swap
+    src: "{{ centos7_swap.file_path }}"
+    fstype: swap
+    opts: defaults
+    dump: 0
+    passno: 0
+    state: present
+  when: ((centos7_swap is defined) and (centos7_swap is not none))
+
 - name: Ensure /usr/local belongs to root:wheel 0775
   file:
     path: /usr/local

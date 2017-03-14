@@ -11,6 +11,13 @@ A target system running CentOS7x.
 Role Variables
 --------------
 
+* centos7_swap optionally creates and enables a swapfile of the specified path and size. The example below would give you a 4GiB swap at /swapfile0
+```
+centos7_swap:
+  file_path: /swapfile0
+  file_size: 4194304
+```
+
 vpshere tagged tasks expect server_name, server_ip, and broker_ip.
 * servername is the value for the hostname. Defaults to current FQDN.
 * server_ip sets the NIC address (Gateway, Netmask, and DNS should already be configured in your base image). Defaults to current address. We set this because we set the IP after firing up a base box on a known addres.
