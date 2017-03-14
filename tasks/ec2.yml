@@ -5,34 +5,38 @@
 - name: Verify latest aws-cli is installed
   pip: name=awscli state=latest
 
-- name: Ensure /opt/oulib/bin exists
+- name: Ensure /opt/oulib/aws/bin exists
   file:
-    path: /opt/oulib/bin
+    path: /opt/oulib/aws/bin
     state: directory
     mode: 0655
     owner: root
     group: wheel
     recurse: yes
 
-- name: Add snapshot script to /opt/oulib/bin
-  copy: src=ebs-snapshot.sh dest=/opt/oulib/bin
+- name: Add snapshot script to /opt/oulib/aws/bin
+  copy: src=ebs-snapshot.sh dest=/opt/oulib/aws/bin
 
 - name: Link snapshot script to /etc/cron.daily
-  file: src=/opt/oulib/bin/ebs-snapshot.sh dest=/etc/cron.daily/ebs-snapshot.cron state=link
+  file: src=/opt/oulib/aws/bin/ebs-snapshot.sh dest=/etc/cron.daily/ebs-snapshot.cron state=link
 
 - name: Get instance ID
   shell: >
     curl --silent http://instance-data/latest/meta-data/instance-id
   register: instance_id
+  always_run: yes
+
 - name: Get instance region
   shell: >
     AZ=`curl --silent http://instance-data/latest/meta-data/placement/availability-zone`;echo "${AZ::-1}"
   register: region
+  always_run: yes
 
 - name: Get instance Name tag
   shell: >
     aws ec2 describe-tags --filters "Name=resource-id,Values={{ instance_id.stdout }}" "Name=key,Values=Name" --region "{{ region.stdout }}"  | jq --raw-output '.Tags|.[0]|.["Value"]'
   register: server_tag_name
+  always_run: yes
 
 - name: Set hostname to instance name
   shell: hostnamectl set-hostname "{{ server_tag_name.stdout }}"
