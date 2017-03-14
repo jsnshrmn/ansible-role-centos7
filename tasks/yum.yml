@@ -4,22 +4,37 @@
 - name: Packages for yum.
   yum: name={{ item }} state=latest
   with_items:
-  - deltarpm
-  - epel-release
-  - libselinux-python
-  - yum
-  - yum-cron
-  - yum-priorities
-  - yum-plugin-versionlock
+    - deltarpm
+    - epel-release
+    - yum
+    - yum-cron
+    - yum-priorities
+    - yum-plugin-versionlock
+
+- name: Update SELinux yum packages to latest
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - libselinux-python
+    - policycoreutils
+    - policycoreutils-python
+    - polkit
+    - selinux-policy
+    - selinux-policy-targeted
+
 - name: yum-cron set for security updates
   lineinfile: "dest=/etc/yum/yum-cron.conf state=present regexp='^update_cmd = default$' line='update_cmd = security'"
+
 - name: yum-cron apply updates
   lineinfile: "dest=/etc/yum/yum-cron.conf state=present regexp='^apply_updates = no$' line='apply_updates = yes'"
+
 - name: Start yum-cron on boot
   service:
     name: yum-cron
     state: started
     enabled: yes
+
 - name: CentOS-Base has priority
   ini_file:
     dest: /etc/yum.repos.d/CentOS-Base.repo
@@ -27,6 +42,7 @@
     option: priority
     value: 1
     backup: yes
+
 - name: CentOS-Updates has priority
   ini_file:
     dest: /etc/yum.repos.d/CentOS-Base.repo
@@ -34,6 +50,7 @@
     option: priority
     value: 1
     backup: yes
+
 - name: Utility packages.
   yum: name={{ item }} state=present
   with_items:
@@ -47,7 +64,6 @@
   - iotop
   - jq
   - nload
-  - policycoreutils-python
   - psmisc
   - python-pip
   - screen
