@@ -1,8 +1,15 @@
 ---
+
 - name: Yum update
-  yum: name=* state=latest update_cache=yes
+  yum:
+    name: *
+    state: latest
+    update_cache: yes
+
 - name: Packages for yum.
-  yum: name={{ item }} state=latest
+  yum:
+    name: "{{ item }}"
+    state: latest
   with_items:
     - deltarpm
     - epel-release
@@ -42,6 +49,8 @@
     option: priority
     value: 1
     backup: yes
+  when: ((ansible_distribution == "CentOS")  and (ansible_distribution_major_version == "7"))
+
 
 - name: CentOS-Updates has priority
   ini_file:
@@ -50,9 +59,12 @@
     option: priority
     value: 1
     backup: yes
+  when: ((ansible_distribution == "CentOS")  and (ansible_distribution_major_version == "7"))
 
 - name: Utility packages.
-  yum: name={{ item }} state=present
+  yum:
+    name: "{{ item }}"
+    state: present
   with_items:
   - ack
   - bind-utils

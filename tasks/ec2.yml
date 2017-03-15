@@ -2,8 +2,29 @@
 - name: Persistent hostname allowed in cloud config file
   lineinfile: "dest=/etc/cloud/cloud.cfg line='preserve_hostname: true'"
 
-- name: Verify latest aws-cli is installed
-  pip: name=awscli state=latest
+- name: Pip build dependencies are present
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+  - gcc
+  - python-devel
+
+- name: Verify latest pip and aws-cli is installed
+  pip:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+  - pip
+  - awscli
+
+- name: Pip build dependencies are absent
+  yum:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+  - gcc
+  - python-devel
 
 - name: Ensure /opt/oulib/aws/bin exists
   file:
