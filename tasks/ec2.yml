@@ -14,6 +14,11 @@
     group: wheel
     recurse: yes
 
+- name: Remove existing ebs-snapshot.cron
+  file:
+    path: /etc/cron.daily/ebs-snapshot.cron
+    state: absent
+
 - name: download ebs-snapshot.sh to /opt/oulib/aws/bin
   get_url:
     url: https://github.com/OULibraries/aws-ec2-ebs-automatic-snapshot-bash/raw/v20170315.0/ebs-snapshot.sh
