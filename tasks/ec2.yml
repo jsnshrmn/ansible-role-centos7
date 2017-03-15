@@ -9,16 +9,29 @@
   file:
     path: /opt/oulib/aws/bin
     state: directory
-    mode: 0655
+    mode: 0755
     owner: root
     group: wheel
     recurse: yes
 
-- name: Add snapshot script to /opt/oulib/aws/bin
-  copy: src=ebs-snapshot.sh dest=/opt/oulib/aws/bin
+- name: download ebs-snapshot.sh to /opt/oulib/aws/bin
+  get_url:
+    url: https://github.com/OULibraries/aws-ec2-ebs-automatic-snapshot-bash/raw/v20170315.0/ebs-snapshot.sh
+    dest: /opt/oulib/aws/bin/ebs-snapshot.sh
+    checksum: md5:cf922fb1c9519f7da7e4b09640aacda4
+    mode: 0755
+    owner: root
+    group: root
+  when: ((centos_7_ebs_snapshot_retention_days is defined) and (centos_7_ebs_snapshot_retention_days is not none))
 
-- name: Link snapshot script to /etc/cron.daily
-  file: src=/opt/oulib/aws/bin/ebs-snapshot.sh dest=/etc/cron.daily/ebs-snapshot.cron state=link
+- name: Add ebs-snapshot.cron to /etc/cron.daily
+  template:
+    src: ebs-snapshot.cron.j2
+    dest: /etc/cron.daily/ebs-snapshot.cron
+    mode: 0755
+    owner: root
+    group: root
+  when: ((centos_7_ebs_snapshot_retention_days is defined) and (centos_7_ebs_snapshot_retention_days is not none))
 
 - name: Get instance ID
   shell: >
