@@ -2,7 +2,7 @@
 
 - name: Yum update
   yum:
-    name: *
+    name: "*"
     state: latest
     update_cache: yes
 
