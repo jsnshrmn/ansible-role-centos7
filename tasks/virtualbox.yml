@@ -1,3 +1,0 @@
----
-- name: Lock kernel version
-  command: yum versionlock kernel
