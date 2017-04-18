@@ -49,6 +49,20 @@
     owner: root
     group: root
   when: ((centos_7_ebs_snapshot_retention_days is defined) and (centos_7_ebs_snapshot_retention_days is not none))
+  tags: assets
+
+- name: Copy helper scripts to /opt/oulib/aws/bin
+  copy:
+    src: "{{ item }}"
+    dest: /opt/oulib/aws/bin
+    mode: 0755
+    owner: root
+    group: root
+  with_items:
+    - ec2_get_account_id.sh
+    - ec2_get_arn.sh
+    - ec2_get_region.sh
+  tags: assets
 
 - name: Add ebs-snapshot.cron to /etc/cron.daily
   template:

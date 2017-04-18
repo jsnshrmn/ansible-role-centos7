@@ -62,6 +62,7 @@
   with_items:
     - colorprompt.sh
     - editor.sh
+  tags: assets
 
 - name: Comment out IPv6 loopback entry in /etc/hosts.
   replace:
