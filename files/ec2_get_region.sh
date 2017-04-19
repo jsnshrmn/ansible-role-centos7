@@ -2,4 +2,4 @@
 
 ec2_az=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
 ec2_region=$(echo "${ec2_az::-1}")
-echo $ec2_region
+printf $ec2_region
