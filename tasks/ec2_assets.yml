@@ -1,7 +1,4 @@
 ---
-- name: Persistent hostname allowed in cloud config file
-  lineinfile: "dest=/etc/cloud/cloud.cfg line='preserve_hostname: true'"
-
 - name: Pip build dependencies are present
   yum:
     name: "{{ item }}"
@@ -58,27 +55,3 @@
     owner: root
     group: root
   when: ((centos_7_ebs_snapshot_retention_days is defined) and (centos_7_ebs_snapshot_retention_days is not none))
-
-- name: Get instance ID
-  shell: >
-    curl --silent http://instance-data/latest/meta-data/instance-id
-  register: instance_id
-  always_run: yes
-
-- name: Get instance region
-  shell: >
-    AZ=`curl --silent http://instance-data/latest/meta-data/placement/availability-zone`;echo "${AZ::-1}"
-  register: region
-  always_run: yes
-
-- name: Get instance Name tag
-  shell: >
-    aws ec2 describe-tags --filters "Name=resource-id,Values={{ instance_id.stdout }}" "Name=key,Values=Name" --region "{{ region.stdout }}"  | jq --raw-output '.Tags|.[0]|.["Value"]'
-  register: server_tag_name
-  always_run: yes
-
-- name: Set hostname to instance name
-  shell: hostnamectl set-hostname "{{ server_tag_name.stdout }}"
-
-- name: Also set /etc/hosts for legacy
-  lineinfile: dest=/etc/hosts line="{{ ansible_eth0.ipv4.address }} {{ server_tag_name.stdout }}"
