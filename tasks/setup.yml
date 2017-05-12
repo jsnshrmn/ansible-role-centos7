@@ -52,17 +52,6 @@
     state: present
   when: ((centos7_swap is defined) and (centos7_swap is not none))
 
-- name: Install shell profile config
-  copy:
-    src: "{{ item }}"
-    dest: /etc/profile.d/
-    owner: root
-    group: wheel
-    mode: 0644
-  with_items:
-    - colorprompt.sh
-    - editor.sh
-
 - name: Comment out IPv6 loopback entry in /etc/hosts.
   replace:
     dest: /etc/hosts

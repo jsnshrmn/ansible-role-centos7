@@ -1,0 +1,31 @@
+---
+
+- name: Ensure /opt/oulib/centos7/bin exists
+  file:
+    path: /opt/oulib/centos7/bin
+    state: directory
+    mode: 0755
+    owner: root
+    group: wheel
+    recurse: yes
+
+- name: Copy shell profile config
+  copy:
+    src: "{{ item }}"
+    dest: /etc/profile.d/
+    owner: root
+    group: wheel
+    mode: 0644
+  with_items:
+    - colorprompt.sh
+    - editor.sh
+
+- name: Copy util scripts
+  copy:
+    src: "{{ item }}"
+    dest: /opt/oulib/centos7/bin/
+    owner: root
+    group: wheel
+    mode: 0755
+  with_items:
+    - cpu_check_steal.sh
