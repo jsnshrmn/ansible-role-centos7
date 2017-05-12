@@ -1,4 +1,4 @@
-#!/usr/bio/env bash
+#!/usr/bin/env bash
 
 # Ensures CPU steal time is below specified percentage before executing
 # commands via bash.
