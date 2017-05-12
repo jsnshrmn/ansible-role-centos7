@@ -53,7 +53,7 @@ Including an example of how to use your role (for instance, with variables passe
 License
 -------
 
-To be determined
+[MIT](https://github.com/OULibraries/ansible-role-centos7/blob/master/LICENSE)
 
 Author Information
 ------------------
