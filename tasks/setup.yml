@@ -58,6 +58,8 @@
     regexp: '^((::1)(.+))$'
     replace: '#\1'
     backup: yes
+  when:
+    - centos7_ipv6_disable
 
 - name: Copy IPv6 sysctl Config
   copy:
@@ -66,9 +68,16 @@
     owner: root
     group: root
     mode: 0644
+  when:
+    - centos7_ipv6_disable
 
 - name: Immediately disable disble IPv6 on all interfaces
   command: sysctl -w net.ipv6.conf.all.disable_ipv6=1
+  when:
+    - centos7_ipv6_disable
 
 - name: Apply sysctl
   command: sysctl -p
+  when: 
+    - centos7_ipv6_disable
+
