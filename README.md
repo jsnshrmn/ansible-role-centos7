@@ -13,9 +13,9 @@ Role Variables
 * Disable IPv6
 
 In some instances we want to enable or disable IPv6. The following boolean variable controls this:
-
-  centos7_ipv6_disable: true
-
+```
+centos7_ipv6_disable: true
+```
 True will disable IPv6 and False will not change the CentOS default and keep iPv6 enabled.
 
 This role disabled IPv6 by default. Please note this is not an idempotent config change. If IPv6 is disabled it will need to be manually enabled.
