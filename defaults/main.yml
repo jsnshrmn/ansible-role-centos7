@@ -5,3 +5,4 @@ server_name: "{{ inventory_hostname }}"
 server_timezone: 'America/Chicago'
 centos7_swap:
 centos_7_ebs_snapshot_retention_days:
+centos7_ipv6_disable: true

@@ -12,13 +12,13 @@ Role Variables
 --------------
 * Disable IPv6
 
-In some instances we want to enable or disable IPv6. To do this we need to add the following boolean variable to our myvars.yml:
+In some instances we want to enable or disable IPv6. The following boolean variable controls this:
 
   centos7_ipv6_disable: true
 
 True will disable IPv6 and False will not change the CentOS default and keep iPv6 enabled.
 
-Please note this is not an idempotent config change. If IPv6 is disabled it will need to be manually enabled.
+This role disabled IPv6 by default. Please note this is not an idempotent config change. If IPv6 is disabled it will need to be manually enabled.
 
 
 * centos7_swap optionally creates and enables a swapfile of the specified path and size. The example below would give you a 4GiB swap at /swapfile0
