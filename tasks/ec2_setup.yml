@@ -29,7 +29,7 @@
     dest: /etc/hosts
     line: "{{ ansible_eth0.ipv4.address }} {{ server_tag_name.stdout }}"
   when: >
-    (ansible_eth0 is defined) and (ansible_eth0 is not none)
+    ansible_eth0 is defined and ansible_eth0 is not none
 
 # This has come up on newer AWS CentOS7 images.
 - name: Otherwise /etc/hosts from ens5 for legacy if possible
